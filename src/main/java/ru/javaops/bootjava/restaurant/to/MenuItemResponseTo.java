@@ -3,7 +3,7 @@ package ru.javaops.bootjava.restaurant.to;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record MenuItemAdminTo(
+public record MenuItemResponseTo(
         int id,
         int restaurantId,
         String name,

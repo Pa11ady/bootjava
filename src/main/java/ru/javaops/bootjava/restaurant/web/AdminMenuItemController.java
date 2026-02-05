@@ -1,7 +1,8 @@
 package ru.javaops.bootjava.restaurant.web;
 
 import org.springframework.web.bind.annotation.*;
-import ru.javaops.bootjava.restaurant.to.MenuItemAdminTo;
+import ru.javaops.bootjava.restaurant.to.MenuItemRequestTo;
+import ru.javaops.bootjava.restaurant.to.MenuItemResponseTo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,12 +13,12 @@ import java.util.List;
 public class AdminMenuItemController {
 
     @GetMapping
-    public List<MenuItemAdminTo> getAll(
+    public List<MenuItemResponseTo> getAll(
             @RequestParam int restaurantId,
             @RequestParam LocalDate date
     ) {
         return List.of(
-                new MenuItemAdminTo(
+                new MenuItemResponseTo(
                         101,
                         restaurantId,
                         "Pizza",
@@ -28,24 +29,24 @@ public class AdminMenuItemController {
     }
 
     @PostMapping
-    public MenuItemAdminTo create(@RequestBody MenuItemAdminTo to) {
-        return new MenuItemAdminTo(
+    public MenuItemResponseTo create(@RequestBody MenuItemRequestTo to) {
+        return new MenuItemResponseTo(
                 102,
                 to.restaurantId(),
                 to.name(),
                 to.price(),
-                to.date()
+                LocalDate.now()
         );
     }
 
     @PutMapping("/{id}")
-    public MenuItemAdminTo update(@PathVariable int id, @RequestBody MenuItemAdminTo to) {
-        return new MenuItemAdminTo(
+    public MenuItemResponseTo update(@PathVariable int id, @RequestBody MenuItemRequestTo to) {
+        return new MenuItemResponseTo(
                 id,
                 to.restaurantId(),
                 to.name(),
                 to.price(),
-                to.date()
+                LocalDate.now()
         );
     }
 
