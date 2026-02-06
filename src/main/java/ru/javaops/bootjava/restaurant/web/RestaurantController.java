@@ -1,36 +1,27 @@
 package ru.javaops.bootjava.restaurant.web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.javaops.bootjava.restaurant.to.MenuItemTo;
+import ru.javaops.bootjava.restaurant.repository.MenuItemRepository;
 import ru.javaops.bootjava.restaurant.to.RestaurantWithMenuTo;
+import ru.javaops.bootjava.restaurant.util.RestaurantsUtil;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/restaurants")
+@RequiredArgsConstructor
 public class RestaurantController {
+
+    private final MenuItemRepository menuItemRepository;
 
     @GetMapping
     public List<RestaurantWithMenuTo> getAllWithMenuToday() {
-        return List.of(
-                new RestaurantWithMenuTo(
-                        1,
-                        "Italiano",
-                        List.of(
-                                new MenuItemTo(101, "Pizza", new BigDecimal("9.99")),
-                                new MenuItemTo(102, "Pasta", new BigDecimal("11.50"))
-                        )
-                ),
-                new RestaurantWithMenuTo(
-                        2,
-                        "Sushi Place",
-                        List.of(
-                                new MenuItemTo(201, "California Roll", new BigDecimal("8.00"))
-                        )
-                )
+        return RestaurantsUtil.getRestaurantsWithMenuToday(
+                menuItemRepository.findAllByDate(LocalDate.now())
         );
     }
 }

@@ -1,35 +1,39 @@
 package ru.javaops.bootjava.restaurant.web;
 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.javaops.bootjava.restaurant.model.Restaurant;
+import ru.javaops.bootjava.restaurant.repository.RestaurantRepository;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/restaurants")
+@RequiredArgsConstructor
 public class AdminRestaurantController {
 
-    public record RestaurantAdminTo(int id, String name) {}
+    private final RestaurantRepository restaurantRepository;
 
     @GetMapping
-    public List<RestaurantAdminTo> getAll() {
-        return List.of(
-                new RestaurantAdminTo(1, "Italiano"),
-                new RestaurantAdminTo(2, "Sushi")
-        );
+    public List<Restaurant> getAll() {
+        return restaurantRepository.findAll();
     }
 
     @PostMapping
-    public RestaurantAdminTo create(@RequestBody RestaurantAdminTo to) {
-        return new RestaurantAdminTo(3, to.name());
+    public Restaurant create(@Valid @RequestBody Restaurant restaurant) {
+        return restaurantRepository.save(restaurant);
     }
 
     @PutMapping("/{id}")
-    public RestaurantAdminTo update(@PathVariable int id, @RequestBody RestaurantAdminTo to) {
-        return new RestaurantAdminTo(id, to.name());
+    public Restaurant update(@PathVariable int id,
+                             @Valid @RequestBody Restaurant restaurant) {
+        restaurant.setId(id);
+        return restaurantRepository.save(restaurant);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
-        // no content
+        restaurantRepository.deleteById(id);
     }
 }
