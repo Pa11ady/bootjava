@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.javaops.bootjava.common.error.NotFoundException;
 import ru.javaops.bootjava.restaurant.model.MenuItem;
 import ru.javaops.bootjava.restaurant.model.Restaurant;
 import ru.javaops.bootjava.restaurant.repository.MenuItemRepository;
@@ -54,5 +55,12 @@ public class AdminMenuItemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         menuItemRepository.deleteById(id);
+    }
+
+    @GetMapping("/{id}")
+    public MenuItemResponseTo get(@PathVariable int id) {
+        MenuItem item = menuItemRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("MenuItem id=" + id));
+        return MenuItemsUtil.createTo(item);
     }
 }

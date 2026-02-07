@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.javaops.bootjava.restaurant.model.MenuItem;
 import ru.javaops.bootjava.restaurant.repository.MenuItemRepository;
 import ru.javaops.bootjava.restaurant.to.RestaurantWithMenuTo;
 import ru.javaops.bootjava.restaurant.util.RestaurantsUtil;
@@ -20,8 +21,8 @@ public class RestaurantController {
 
     @GetMapping
     public List<RestaurantWithMenuTo> getAllWithMenuToday() {
-        return RestaurantsUtil.getRestaurantsWithMenuToday(
-                menuItemRepository.findAllByDate(LocalDate.now())
-        );
+        List<MenuItem> items =
+                menuItemRepository.findAllByDateWithRestaurant(LocalDate.now());
+        return RestaurantsUtil.getRestaurantsWithMenuToday(items);
     }
 }

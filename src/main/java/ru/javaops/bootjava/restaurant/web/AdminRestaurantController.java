@@ -3,6 +3,7 @@ package ru.javaops.bootjava.restaurant.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.javaops.bootjava.common.error.NotFoundException;
 import ru.javaops.bootjava.restaurant.model.Restaurant;
 import ru.javaops.bootjava.restaurant.repository.RestaurantRepository;
 
@@ -35,5 +36,11 @@ public class AdminRestaurantController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         restaurantRepository.deleteById(id);
+    }
+
+    @GetMapping("/{id}")
+    public Restaurant get(@PathVariable int id) {
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Restaurant id=" + id));
     }
 }
