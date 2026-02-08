@@ -19,7 +19,7 @@ import java.time.LocalTime;
 })
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Vote extends BaseEntity {
 
     @NotNull
