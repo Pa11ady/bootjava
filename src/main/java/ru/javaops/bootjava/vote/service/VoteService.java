@@ -29,7 +29,7 @@ public class VoteService {
         LocalDate today = LocalDate.now();
         LocalTime now = LocalTime.now();
 
-        Restaurant restaurant = restaurantRepository.getReferenceById(restaurantId);
+        Restaurant restaurant = restaurantRepository.getExisted(restaurantId);
 
         return voteRepository.findByUserIdAndDate(user.getId(), today)
                 .map(existing -> {
