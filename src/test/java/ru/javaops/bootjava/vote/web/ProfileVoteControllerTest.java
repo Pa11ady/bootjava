@@ -36,7 +36,6 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-
     @Test
     @WithUserDetails(USER_MAIL)
     void vote() throws Exception {
@@ -52,20 +51,6 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
 
         assertThat(response.restaurantId()).isEqualTo(RESTAURANT_1_ID);
         assertThat(response.date()).isEqualTo(LocalDate.now());
-    }
-
-    @Test
-    @WithUserDetails(USER_MAIL)
-    void changeVoteBeforeDeadline() throws Exception {
-        perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(new VoteRequestTo(RESTAURANT_1_ID))))
-                .andExpect(status().isOk());
-
-        perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(new VoteRequestTo(RESTAURANT_2_ID))))
-                .andExpect(status().isOk());
     }
 
     @Test

@@ -1,13 +1,13 @@
 package ru.javaops.bootjava.restaurant.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import ru.javaops.bootjava.common.BaseRepository;
 import ru.javaops.bootjava.restaurant.model.MenuItem;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
+public interface MenuItemRepository extends BaseRepository<MenuItem> {
 
     List<MenuItem> findAllByRestaurantIdAndDate(int restaurantId, LocalDate date);
 

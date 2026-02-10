@@ -29,6 +29,7 @@ public class AdminRestaurantController {
     @PutMapping("/{id}")
     public Restaurant update(@PathVariable int id,
                              @Valid @RequestBody Restaurant restaurant) {
+        restaurantRepository.getExisted(id);
         restaurant.setId(id);
         return restaurantRepository.save(restaurant);
     }

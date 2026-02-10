@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.javaops.bootjava.common.error.NotFoundException;
 import ru.javaops.bootjava.restaurant.model.MenuItem;
 import ru.javaops.bootjava.restaurant.model.Restaurant;
 import ru.javaops.bootjava.restaurant.repository.MenuItemRepository;
@@ -37,7 +36,7 @@ public class AdminMenuItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MenuItemResponseTo create(@Valid @RequestBody MenuItemRequestTo to) {
-        Restaurant restaurant = restaurantRepository.findById(to.restaurantId()).orElseThrow();
+        Restaurant restaurant = restaurantRepository.getExisted(to.restaurantId());
         MenuItem item = MenuItemsUtil.createNewFromTo(to, restaurant);
         menuItemRepository.save(item);
         return MenuItemsUtil.createTo(item);
@@ -46,8 +45,9 @@ public class AdminMenuItemController {
     @PutMapping("/{id}")
     public MenuItemResponseTo update(@PathVariable int id,
                                      @Valid @RequestBody MenuItemRequestTo to) {
-        MenuItem item = menuItemRepository.findById(id).orElseThrow();
+        MenuItem item = menuItemRepository.getExisted(id);
         MenuItemsUtil.updateFromTo(item, to);
+        menuItemRepository.save(item);
         return MenuItemsUtil.createTo(item);
     }
 
@@ -59,8 +59,7 @@ public class AdminMenuItemController {
 
     @GetMapping("/{id}")
     public MenuItemResponseTo get(@PathVariable int id) {
-        MenuItem item = menuItemRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("MenuItem id=" + id));
+        MenuItem item = menuItemRepository.getExisted(id);
         return MenuItemsUtil.createTo(item);
     }
 }
